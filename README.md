@@ -109,22 +109,22 @@ python app.py
 ## Project Screenshots
 
 ### LOGIN Page(ROLE-BASED)
-![login Page](Screenshots/login page.png)
+![login Page](screenshots/login page.png)
 
 
 ### HR Page
-![Home Page for HR](Screenshots/HR accessed page.png)
+![Home Page for HR](screenshots/HR accessed page.png)
 
 ### HR DB Page
-![HR DATABASE VIEW Page](Screenshots/DB page view for HR.png)
+![HR DATABASE VIEW Page](screenshots/DB page view for HR.png)
 
 
 ### ceo Page
-![Home Page for CEO](Screenshots/CEO accessed page.png)
+![Home Page for CEO](screenshots/CEO accessed page.png)
 
 
 ### Attrition Prediction
-![Prediction Result](Screenshots/Prediction.png)
+![Prediction Result](screenshots/Prediction.png)
 
 
 
@@ -140,8 +140,8 @@ Power BI is used to visualize employee attrition patterns and analyze prediction
 - Enhance application security and scalability.
 
 ### Power BI Dashboard
-![Dashboard](Screenshots/DASHBOARD-1.png)
-![Dashboard](Screenshots/DASHBOARD-2.png)
+![Dashboard](screenshots/DASHBOARD-1.png)
+![Dashboard](screenshots/DASHBOARD-2.png)
 
 
 
