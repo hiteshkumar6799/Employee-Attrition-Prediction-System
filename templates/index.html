@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Attrition Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4 mb-5">
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="card shadow p-4">
+    <h3 class="text-center mb-4">Employee Attrition Prediction</h3>
+    <form method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label>Employee ID</label>
+          <input type="number" name="employee_id" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+          <label>Job Satisfaction (1–5)</label>
+          <input type="number" step="0.1" min="0" max="5" name="jobsatisfaction" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+          <label>Work Life Balance (1–5)</label>
+          <input type="number" step="0.1" min="0" max="5" name="worklifebalance" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+          <label>Performance Rating (1–5)</label>
+          <input type="number" step="0.1" min="0" max="5" name="performancerating" class="form-control" required>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label>Salary</label>
+          <input type="number" step="0.1" name="salary" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+          <label>Years at Company</label>
+          <input type="number" step="0.1" name="yearsatcompany" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+          <label>High Salary</label>
+          <select name="highsalary" class="form-select">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label>Long Tenure</label>
+          <select name="longtenure" class="form-select">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label>Overtime</label>
+          <select name="overtime" id="overtime-select" class="form-select">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+          </select>
+        </div>
+        <div class="col-md-3" id="ot-month-group" style="display:none;">
+          <label>Overtime Month</label>
+          <select name="overtime_month" id="overtime_month" class="form-select">
+            <option value="">Select Month</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+          </select>
+        </div>
+        <div class="col-md-3" id="ot-count-group" style="display:none;">
+          <label>Overtime Count</label>
+          <input type="number" name="overtime_count" id="overtime_count" class="form-control" placeholder="e.g. 2">
+        </div>
+      </div>
+
+      
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <button type="submit" class="btn btn-primary w-100">Predict</button>
+        </div>
+        <div class="col-md-6 mb-2">
+          <a href="{{ url_for('records') }}" class="btn btn-success w-100">📊 View Records</a>
+        </div>
+      </div>
+
+      
+      {% if session.get('user') == 'ceo' %}
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <a href="{{ url_for('refresh_dashboard') }}" class="btn btn-info w-100">🔄 Refresh Dashboard Data</a>
+        </div>
+        <div class="col-md-6 mb-2">
+          <a href="{{ url_for('open_dashboard') }}" class="btn btn-warning w-100">📈 Open Power BI Dashboard</a>
+        </div>
+      </div>
+      {% endif %}
+    </form>
+  </div>
+
+  {% if prediction %}
+  <div id="prediction-results" class="card mt-4 shadow-lg border-3
+      {% if prediction == 'Attrition Likely' %}
+        border-danger
+      {% else %}
+        border-success
+      {% endif %}
+    ">
+    <div class="card-body">
+      <h4 class="mb-3" style="font-weight: bold;">Prediction Results</h4>
+      <table class="table table-bordered align-middle">
+        {% for key, value in input_values.items() %}
+          {% if key in ("Overtime Month", "Overtime Count") and input_values["Overtime"] == "No" %}
+            {# skip if no overtime #}
+          {% else %}
+            <tr>
+              <td><strong>{{ key }}</strong></td>
+              <td>{{ value }}</td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </table>
+      <div class="my-3">
+        <span class="fs-5"><strong>Performance Index:</strong> {{ performance_index }}</span>
+      </div>
+      <div>
+        {% if prediction == "Attrition Likely" %}
+          <h5 class="text-danger fw-bold">Prediction: {{ prediction }}</h5>
+        {% else %}
+          <h5 class="text-success fw-bold">Prediction: {{ prediction }}</h5>
+        {% endif %}
+        <h6>Probability: <span class="badge bg-info text-dark">{{ probability }}</span></h6>
+      </div>
+    </div>
+  </div>
+  <script>
+    
+    document.getElementById('prediction-results').scrollIntoView({behavior: 'smooth'});
+  </script>
+  {% endif %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const otSelect = document.getElementById('overtime-select');
+  const otMonthGroup = document.getElementById('ot-month-group');
+  const otCountGroup = document.getElementById('ot-count-group');
+  otSelect.addEventListener('change', function() {
+    if (this.value === '1') {
+      otMonthGroup.style.display = '';
+      otCountGroup.style.display = '';
+    } else {
+      otMonthGroup.style.display = 'none';
+      otCountGroup.style.display = 'none';
+    }
+  });
+  window.onload = function() {
+    if (otSelect.value === '1') {
+      otMonthGroup.style.display = '';
+      otCountGroup.style.display = '';
+    } else {
+      otMonthGroup.style.display = 'none';
+      otCountGroup.style.display = 'none';
+    }
+  };
+</script>
+</body>
+</html>

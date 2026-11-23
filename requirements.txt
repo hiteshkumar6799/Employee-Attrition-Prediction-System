@@ -1,0 +1,12 @@
+
+Flask
+Flask-Bcrypt
+Flask-SQLAlchemy
+psycopg2-binary
+pandas
+numpy
+scikit-learn
+openpyxl
+Flask-WTF
+python-dotenv
+gunicorn

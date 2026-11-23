@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Updated Prediction Result</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container text-center mt-5">
+  <div class="card mx-auto shadow-lg p-4" style="max-width: 750px;">
+    <h3 class="mb-3 text-primary">Recalculated Prediction Summary</h3>
+    <hr>
+
+    <div class="mb-3">
+      <h5 class="text-muted mb-3">Updated Employee Information</h5>
+      <table class="table table-bordered table-sm text-start">
+        <tbody>
+          {% for key, value in input_values.items() %}
+          <tr>
+            <td style="width: 45%;"><strong>{{ key }}</strong></td>
+            <td>{{ value }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td><strong>Performance Index</strong></td>
+            <td>{{ performance_index }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr>
+    <div class="my-4">
+      {% if prediction == "Attrition Likely" %}
+        <h4 class="text-danger">Prediction: {{ prediction }}</h4>
+      {% else %}
+        <h4 class="text-success">Prediction: {{ prediction }}</h4>
+      {% endif %}
+      <h5 class="text-secondary">Probability: {{ probability }}</h5>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <a href="{{ url_for('records') }}" class="btn btn-outline-primary">📊 Back to Records</a>
+      <a href="{{ url_for('index') }}" class="btn btn-success">🏠 Try New Prediction</a>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger">🚪 Logout</a>
+    </div>
+  </div>
+</div>
+
+<footer class="text-center text-muted mt-4 small">
+  &copy; 2025 Employee Attrition Prediction System
+</footer>
+</body>
+</html>
