@@ -132,6 +132,14 @@ python app.py
 
 Power BI is used to visualize employee attrition patterns and analyze prediction results.
 
+### Power BI Dashboard
+![Dashboard](screenshots/DASHBOARD-1.png)
+
+
+### Power BI Dashboard
+![Dashboard 2](screenshots/DASHBOARD 2.png)
+
+
 ## Future Improvements
 
 - Improve model performance through hyperparameter optimization.
@@ -139,9 +147,6 @@ Power BI is used to visualize employee attrition patterns and analyze prediction
 - Improve dashboard reporting and visualization.
 - Enhance application security and scalability.
 
-### Power BI Dashboard
-![Dashboard](screenshots/DASHBOARD-1.png)
-![Dashboard](screenshots/DASHBOARD 2.png)
 
 
 
