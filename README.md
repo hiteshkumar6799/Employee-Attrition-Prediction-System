@@ -137,7 +137,7 @@ Power BI is used to visualize employee attrition patterns and analyze prediction
 
 
 ### Power BI Dashboard
-![Dashboard 2](screenshots/DASHBOARD 2.png)
+![Dashboard 2](screenshots/DASHBOARD-2.png)
 
 
 ## Future Improvements
